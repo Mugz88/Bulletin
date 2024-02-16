@@ -1,6 +1,9 @@
 from rest_framework import generics
 from rest_framework import permissions
 
+from django.shortcuts import render
+from django.views.generic import TemplateView
+
 from .models import Advert
 from .serializers import AdvertListSer, AdvertDetailSer, AdvertCreateSer
 
@@ -51,3 +54,12 @@ class UserAdvertDelete(generics.DestroyAPIView):
 
     def get_queryset(self):
         return Advert.objects.filter(id=self.kwargs.get("pk"), user=self.request.user)
+
+class AdvertListView(TemplateView):
+    template_name = 'callboard/advert-list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Ваш код для получения данных, которые нужно отобразить на странице
+        context['adverts'] = Advert.objects.all()  # Пример получения всех объявлений
+        return context

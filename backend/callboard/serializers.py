@@ -66,7 +66,7 @@ class AdvertCreateSer(serializers.ModelSerializer):
             "images"
         )
 
-    def create(self, request):
-        request["user"] = self.context['request'].user
-        advert = Advert.objects.create(**request)
+    def create(self, validated_data):
+        validated_data["user"] = self.context['request'].user
+        advert = Advert.objects.create(**validated_data)
         return advert
